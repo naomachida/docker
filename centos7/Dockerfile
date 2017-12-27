@@ -14,8 +14,6 @@ RUN yum -y install openssh-server
 RUN sed -ri 's/^#PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -ri 's/^UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
 
-RUN /usr/sbin/sshd -D
-
 # 空パスワードの場合は以下をコメントアウト
 #RUN passwd -d root
 
@@ -24,4 +22,4 @@ RUN echo 'root:root' | chpasswd
 
 EXPOSE 22
 
-CMD /sbin/init
+CMD ["/usr/sbin/sshd", "-D"]
