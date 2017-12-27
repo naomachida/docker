@@ -14,7 +14,7 @@ RUN sed -ri 's/^#PermitEmptyPasswords no/PermitEmptyPasswords yes/' /etc/ssh/ssh
 RUN sed -ri 's/^#PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -ri 's/^UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
 
-RUN /etc/init.d/sshd start
+RUN /usr/sbin/sshd
 
 # 空パスワードの場合は以下をコメントアウト
 RUN passwd -d root
