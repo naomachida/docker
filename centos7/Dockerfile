@@ -22,6 +22,10 @@ RUN ssh-keygen -q -t rsa -b 2048 -f /etc/ssh/ssh_host_rsa_key -N ''
 RUN ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
 RUN ssh-keygen -t dsa -f /etc/ssh/ssh_host_ed25519_key -N ''
 RUN ls -la /etc/ssh
+RUN chmod 644 /etc/ssh/ssh_host_rsa_key
+RUN chmod 644 /etc/ssh/ssh_host_ecdsa_key
+RUN chmod 644 /etc/ssh/ssh_host_ed25519_key
+RUN ls -la /etc/ssh
 
 # 空パスワードの場合は以下をコメントアウト
 #RUN passwd -d root
