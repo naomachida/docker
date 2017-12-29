@@ -46,7 +46,8 @@ RUN mv /var/lib/apache-tomcat-7.0.82 /var/lib/tomcat7
 RUN rm -rf /tmp/apache-tomcat-7.0.82.tar.gz
 
 # tomcatメモリ設定
-RUN sed -i '2iexport CATALINA_OPTS="-Duser.language=ja -Duser.country=JP -Xms128m -Xmx512m -XX:PermSize=128m -XX:MaxPermSize=256m"' /var/lib/tomcat7/bin/startup.sh
+#RUN sed -i '2iexport CATALINA_OPTS="-Duser.language=ja -Duser.country=JP -Xms128m -Xmx512m -XX:PermSize=128m -XX:MaxPermSize=256m"' /var/lib/tomcat7/bin/startup.sh
+ENV CATALINA_OPTS="-Duser.language=ja -Duser.country=JP -Xms128m -Xmx512m -XX:PermSize=128m -XX:MaxPermSize=256m"
 
 # tomcat環境変数
 ENV CATALINA_HOME /var/lib/tomcat7
@@ -54,4 +55,6 @@ ENV CATALINA_HOME /var/lib/tomcat7
 EXPOSE 22
 EXPOSE 8080
 
-CMD /var/lib/tomcat7/bin/catalina.sh run
+
+#CMD /var/lib/tomcat7/bin/catalina.sh run
+CMD ["/usr/sbin/sshd", "-D"]
