@@ -53,3 +53,5 @@ ENV CATALINA_HOME /var/lib/tomcat7
 
 EXPOSE 22
 EXPOSE 8080
+
+CMD ["/var/lib/tomcat7/bin/startup.sh"]
