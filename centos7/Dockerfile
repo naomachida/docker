@@ -39,11 +39,14 @@ ENV JRE_HOME $JAVA_HOME/jre
 ENV CLASSPATH .:$JAVA_HOME/lib:$JRE_HOME/lib
 ENV PATH $PATH:$JAVA_HOME/bin
 
-# tomcat
+# tomcatインストール
 RUN wget -P /tmp http://mirror.bit.edu.cn/apache/tomcat/tomcat-7/v7.0.82/bin/apache-tomcat-7.0.82.tar.gz
 RUN tar xzf /tmp/apache-tomcat-7.0.82.tar.gz -C /var/lib
 RUN mv /var/lib/apache-tomcat-7.0.82 /var/lib/tomcat7
 RUN rm -rf /tmp/apache-tomcat-7.0.82.tar.gz
+
+# tomcatメモリ設定
+RUN sed -i '2iexport CATALINA_OPTS="-Duser.language=ja -Duser.country=JP -Xms128m -Xmx512m -XX:PermSize=128m -XX:MaxPermSize=256m"' /var/lib/tomcat7/bin/startup.sh
 
 # tomcat環境変数
 ENV CATALINA_HOME /var/lib/tomcat7
