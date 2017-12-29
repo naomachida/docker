@@ -18,7 +18,7 @@ RUN yum -y update && \
 #RUN sed -ri 's/^#PermitEmptyPasswords no/PermitEmptyPasswords yes/' /etc/ssh/sshd_config
 
 RUN sed -ri 's/^#PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN sed -ri 's/^UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
+#RUN sed -ri 's/^UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
 
 # 鍵作成
 RUN ls -la /etc/ssh
