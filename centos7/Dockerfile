@@ -11,14 +11,12 @@ RUN yum -y update && \
   yum -y install net-tools && \
   yum -y install wget && \
   yum -y install java-1.7.0-openjdk && \
-  yum -y install java-1.7.0-openjdk-devel
+  yum -y install java-1.7.0-openjdk-devel && \
+  yum -y install subversion
 
-
-# 空パスワードの場合は以下をコメントアウト
-#RUN sed -ri 's/^#PermitEmptyPasswords no/PermitEmptyPasswords yes/' /etc/ssh/sshd_config
 
 RUN sed -ri 's/^#PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config
-#RUN sed -ri 's/^UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
 # 鍵作成
 RUN ls -la /etc/ssh
@@ -26,9 +24,6 @@ RUN ssh-keygen -q -t rsa -b 2048 -f /etc/ssh/ssh_host_rsa_key -N ''
 RUN ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
 RUN ssh-keygen -t dsa -f /etc/ssh/ssh_host_ed25519_key -N ''
 RUN ls -la /etc/ssh
-
-# 空パスワードの場合は以下をコメントアウト
-#RUN passwd -d root
 
 # 任意のパスワードの場合は以下をコメントアウト & パスワードを書き換える
 RUN echo 'root:123456' | chpasswd
@@ -46,15 +41,20 @@ RUN mv /var/lib/apache-tomcat-7.0.82 /var/lib/tomcat7
 RUN rm -rf /tmp/apache-tomcat-7.0.82.tar.gz
 
 # tomcatメモリ設定
-#RUN sed -i '2iexport CATALINA_OPTS="-Duser.language=ja -Duser.country=JP -Xms128m -Xmx512m -XX:PermSize=128m -XX:MaxPermSize=256m"' /var/lib/tomcat7/bin/startup.sh
 ENV CATALINA_OPTS="-Duser.language=ja -Duser.country=JP -Xms128m -Xmx512m -XX:PermSize=128m -XX:MaxPermSize=256m"
 
 # tomcat環境変数
 ENV CATALINA_HOME /var/lib/tomcat7
 
+# svnよりwarをダウンロード
+RUN mkdir /svn
+RUN svn co https://117.107.207.117/projects/standard_ilc/trunk/war/ --username nao_machida --password H6bdMeP4 --no-auth-cache /svn/  <<<"t"
+
+RUN ls -la /svn
+RUN cp /svn/*.war /var/lib/tomcat7/webapps/
+RUN ls -la /var/lib/tomcat7/webapps
+
 EXPOSE 22
 EXPOSE 8080
 
-
-#CMD /var/lib/tomcat7/bin/catalina.sh run
-CMD ["/usr/sbin/sshd", "-D"]
+CMD /var/lib/tomcat7/bin/catalina.sh run
