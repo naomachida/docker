@@ -46,13 +46,39 @@ ENV CATALINA_OPTS="-Duser.language=ja -Duser.country=JP -Xms128m -Xmx512m -XX:Pe
 # tomcat環境変数
 ENV CATALINA_HOME /var/lib/tomcat7
 
-# svnよりwarをダウンロード
-RUN mkdir /svn
-RUN svn co https://117.107.207.117/projects/standard_ilc/trunk/war/ --username nao_machida --password H6bdMeP4 --no-auth-cache /svn/  <<<"t"
-
-RUN ls -la /svn
-RUN cp /svn/*.war /var/lib/tomcat7/webapps/
+# svnよりwarをダウンロード、配備する
+RUN mkdir /war
+RUN svn co https://117.107.207.117/projects/standard_ilc/trunk/war/ --username nao_machida --password H6bdMeP4 --no-auth-cache /war/  <<<"t"
+RUN ls -la /war
+RUN cp /war/*.war /var/lib/tomcat7/webapps/
 RUN ls -la /var/lib/tomcat7/webapps
+
+# oracle instant client インストール
+RUN svn co https://117.107.207.117/projects/standard_ilc/trunk/orc/ --username nao_machida --password H6bdMeP4 --no-auth-cache /tmp/  <<<"t"
+RUN ls -la /tmp
+
+RUN yum install -y libaio
+RUN rpm -ivh /tmp/oracle-instantclient11.2-basic-11.2.0.4.0-1.x86_64.rpm && \
+    rpm -ivh /tmp/oracle-instantclient11.2-sqlplus-11.2.0.4.0-1.x86_64.rpm
+
+RUN mkdir -p ~/oracle/network/admin
+ADD tnsnames.ora ~/oracle/network/admin/
+ENV TNS_ADMIN=~/oracle/network/admin
+ENV ORACLE_HOME=/usr/lib/oracle/11.2/client64
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/lib/oracle/11.2/client64/lib/
+ENV NLS_LANG Japanese_Japan.AL32UTF8
+ENV NLS_DATE_FORMAT 'YYYY/MM/DD HH24:MI:SS'
+
+# sqlldr imp exp インストール
+RUN cp /tmp/imp /usr/lib/oracle/11.2/client64/bin
+RUN cp /tmp/exp /usr/lib/oracle/11.2/client64/bin
+RUN cp /tmp/sqlldr /usr/lib/oracle/11.2/client64/bin
+RUN mkdir -p /usr/lib/oracle/11.2/client64/rdbms
+RUN cp -r /tmp/mesg /usr/lib/oracle/11.2/client64/rdbms/
+
+RUN chmod +x /usr/lib/oracle/11.2/client64/bin/exp
+RUN chmod +x /usr/lib/oracle/11.2/client64/bin/imp
+RUN chmod +x /usr/lib/oracle/11.2/client64/bin/sqlldr
 
 EXPOSE 22
 EXPOSE 8080
