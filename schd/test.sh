@@ -5,7 +5,7 @@ export NLS_LANG=Japanese_Japan.AL32UTF8
 export NLS_DATE_FORMAT='YYYY/MM/DD HH24:MI:SS'
 #export strSchema=standard_dev10/standard_dev10@orcl
 #export strSchema=standard/standard@xe
-export strSchema=standard/standard@haier
+export strSchema=standard/standard@orcl
 
 export YYYY=`date +%Y`
 export MM=`date +%m`
