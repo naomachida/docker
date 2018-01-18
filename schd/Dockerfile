@@ -30,8 +30,8 @@ RUN chmod 744 /app/test_SP2.sql
 RUN chmod 744 /app/vendor.ctl
 RUN ls -la /app
 
-RUN echo '*/1 * * * * /app/test.sh >> /tmp/cron.log 2>>/tmp/error.log' >> /tmp/test.cron
-RUN crontab /tmp/test.cron
+RUN echo '*/2 * * * * /app/test.sh >> /tmp/cron.log 2>>/tmp/error.log' >> /tmp/test.cron
+RUN crontab -u root /tmp/test.cron
 
 # java環境変数
 ENV JAVA_HOME /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.161-2.6.12.0.el7_4.x86_64
