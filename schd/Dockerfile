@@ -15,6 +15,8 @@ RUN yum -y update && \
 # タイムゾーンをCSTへ
 RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
+RUN ifconfig
+
 # 
 RUN sed -i '/session    required   pam_loginuid.so/c\#session    required   pam_loginuid.so' /etc/pam.d/crond
 
