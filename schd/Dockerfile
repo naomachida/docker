@@ -19,19 +19,19 @@ RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN sed -i '/session    required   pam_loginuid.so/c\#session    required   pam_loginuid.so' /etc/pam.d/crond
 
 # cron
-#RUN mkdir /app
-#ADD schd/test.sh /app/
-#ADD schd/test_Dat1.sql /app/
-#ADD schd/test_SP2.sql /app/
-#ADD schd/vendor.ctl /app/
-#RUN chmod 744 /app/test.sh
-#RUN chmod 744 /app/test_Dat1.sql
-#RUN chmod 744 /app/test_SP2.sql
-#RUN chmod 744 /app/vendor.ctl
-#RUN ls -la /app
+RUN mkdir /app
+ADD test.sh /app/
+ADD test_Dat1.sql /app/
+ADD test_SP2.sql /app/
+ADD vendor.ctl /app/
+RUN chmod 744 /app/test.sh
+RUN chmod 744 /app/test_Dat1.sql
+RUN chmod 744 /app/test_SP2.sql
+RUN chmod 744 /app/vendor.ctl
+RUN ls -la /app
 
-#RUN echo '*/2 * * * * /app/test.sh >> /tmp/cron.log 2>>/tmp/error.log' >> /tmp/test.cron
-#RUN crontab -u root /tmp/test.cron
+RUN echo '*/2 * * * * /app/test.sh >> /tmp/cron.log 2>>/tmp/error.log' >> /tmp/test.cron
+RUN crontab -u root /tmp/test.cron
 
 # java環境変数
 ENV JAVA_HOME /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.161-2.6.12.0.el7_4.x86_64
