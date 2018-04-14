@@ -15,8 +15,6 @@ RUN yum -y update && \
 # タイムゾーンをCSTへ
 RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-RUN ip a
-
 # 
 RUN sed -i '/session    required   pam_loginuid.so/c\#session    required   pam_loginuid.so' /etc/pam.d/crond
 
@@ -42,33 +40,33 @@ ENV CLASSPATH .:$JAVA_HOME/lib:$JRE_HOME/lib
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # oracle instant client インストール
-#RUN svn co https://117.107.207.117/projects/standard_ilc/trunk/orc/ --username nao_machida --password H6bdMeP4 --no-auth-cache /tmp/  <<<"t"
+RUN svn co https://117.107.207.117/projects/standard_ilc/trunk/orc/ --username nao_machida --password H6bdMeP4 --no-auth-cache /tmp/  <<<"t"
 #RUN svn co https://192.168.1.120/projects/standard_ilc/trunk/orc/ --username nao_machida --password H6bdMeP4 --no-auth-cache /tmp/  <<<"t"
 #RUN ls -la /tmp
 
-#RUN yum install -y libaio
-#RUN rpm -ivh /tmp/oracle-instantclient11.2-basic-11.2.0.4.0-1.x86_64.rpm && \
-#    rpm -ivh /tmp/oracle-instantclient11.2-sqlplus-11.2.0.4.0-1.x86_64.rpm
+RUN yum install -y libaio
+RUN rpm -ivh /tmp/oracle-instantclient11.2-basic-11.2.0.4.0-1.x86_64.rpm && \
+    rpm -ivh /tmp/oracle-instantclient11.2-sqlplus-11.2.0.4.0-1.x86_64.rpm
 
-#RUN mkdir -p /root/oracle/network/admin
-#ADD tnsnames.ora /root/oracle/network/admin/
-#RUN ls /root/oracle/network/admin/
-#ENV TNS_ADMIN=/root/oracle/network/admin
-#ENV ORACLE_HOME=/usr/lib/oracle/11.2/client64
-#ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/lib/oracle/11.2/client64/lib/
-#ENV NLS_LANG Japanese_Japan.AL32UTF8
-#ENV NLS_DATE_FORMAT 'YYYY/MM/DD HH24:MI:SS'
+RUN mkdir -p /root/oracle/network/admin
+ADD tnsnames.ora /root/oracle/network/admin/
+RUN ls /root/oracle/network/admin/
+ENV TNS_ADMIN=/root/oracle/network/admin
+ENV ORACLE_HOME=/usr/lib/oracle/11.2/client64
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/lib/oracle/11.2/client64/lib/
+ENV NLS_LANG Japanese_Japan.AL32UTF8
+ENV NLS_DATE_FORMAT 'YYYY/MM/DD HH24:MI:SS'
 
 # sqlldr imp exp インストール
-#RUN cp /tmp/imp /usr/lib/oracle/11.2/client64/bin
-#RUN cp /tmp/exp /usr/lib/oracle/11.2/client64/bin
-#RUN cp /tmp/sqlldr /usr/lib/oracle/11.2/client64/bin
-#RUN mkdir -p /usr/lib/oracle/11.2/client64/rdbms
-#RUN cp -r /tmp/mesg /usr/lib/oracle/11.2/client64/rdbms/
+RUN cp /tmp/imp /usr/lib/oracle/11.2/client64/bin
+RUN cp /tmp/exp /usr/lib/oracle/11.2/client64/bin
+RUN cp /tmp/sqlldr /usr/lib/oracle/11.2/client64/bin
+RUN mkdir -p /usr/lib/oracle/11.2/client64/rdbms
+RUN cp -r /tmp/mesg /usr/lib/oracle/11.2/client64/rdbms/
 
-#RUN chmod +x /usr/lib/oracle/11.2/client64/bin/exp
-#RUN chmod +x /usr/lib/oracle/11.2/client64/bin/imp
-#RUN chmod +x /usr/lib/oracle/11.2/client64/bin/sqlldr
+RUN chmod +x /usr/lib/oracle/11.2/client64/bin/exp
+RUN chmod +x /usr/lib/oracle/11.2/client64/bin/imp
+RUN chmod +x /usr/lib/oracle/11.2/client64/bin/sqlldr
 
 # MTAをpostfixへ変更
 RUN alternatives --set mta /usr/sbin/sendmail.postfix
