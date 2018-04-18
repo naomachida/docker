@@ -47,7 +47,7 @@ RUN svn co https://117.107.207.117/projects/standard_ilc/trunk/orc/ --username n
 #RUN svn co https://192.168.1.120/projects/standard_ilc/trunk/orc/ --username nao_machida --password H6bdMeP4 --no-auth-cache /tmp/  <<<"t"
 RUN ls -la /tmp
 
-#RUN yum install -y libaio
+RUN yum install -y libaio
 RUN rpm -ivh /tmp/oracle-instantclient11.2-basic-11.2.0.4.0-1.x86_64.rpm && \
     rpm -ivh /tmp/oracle-instantclient11.2-sqlplus-11.2.0.4.0-1.x86_64.rpm
 
