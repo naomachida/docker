@@ -32,7 +32,7 @@ echo '2.return='$rtn >> /tmp/5.txt
 
 echo '001,'${strDate} > /tmp/vender.txt
 
-#${ORACLE_HOME}/bin/sqlldr userid=${strSchema} control=vendor.ctl data=/tmp/vendor.txt bad=/tmp/6.bad log=/tmp/6.txt
+${ORACLE_HOME}/bin/sqlldr userid=${strSchema} control=vendor.ctl data=/tmp/vendor.txt bad=/tmp/6.bad log=/tmp/6.txt
 
 echo "test" | mail -s "mailtest" nao_machida@cross-docking.com
 
